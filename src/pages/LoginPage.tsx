@@ -7,18 +7,40 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRef } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "@/http/api";
 const LoginPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const PasswordRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate()
+
+  const mutation = useMutation({
+    mutationFn:login,
+    onSuccess() {
+      console.log('Login Sucessfully');
+
+      //redirect to home page
+      navigate('/dashboard/home')
+    },
+  })
   const handleLogin = ()=>{
     const email = emailRef.current?.value;
     const password = PasswordRef.current?.value;
     console.log(email,password)
+
+    //mutation
+    if(!email || !password){
+      return alert('Please enter email and password')
+    }
+    mutation.mutate({email,password})
+
+
+    //make Server call
   }
   return (
     <section className="flex justify-center items-center h-screen">
