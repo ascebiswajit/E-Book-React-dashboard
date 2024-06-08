@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Navigate, Outlet } from "react-router-dom";
 import {
   Bell,
   CircleUser,
@@ -25,8 +25,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import useTokenStore from "@/store";
 
 const DashboardLayouts = () => {
+
+  const {token,setToken} = useTokenStore((state)=>state);
+
+  if(!token){
+    return <Navigate to={'/auth/login'} replace/>
+  }
+
+  const logoutFunc =()=>{
+    console.log('logged out');
+    setToken('');
+  }
   return (
     <>
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -109,7 +121,9 @@ const DashboardLayouts = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Settings</DropdownMenuItem>
 
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Button variant={'link'} onClick={logoutFunc}>Logout</Button>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </header>

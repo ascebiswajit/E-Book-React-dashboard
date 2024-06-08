@@ -26,7 +26,8 @@ const LoginPage = () => {
     mutationFn: login,
     onSuccess(response) {
       console.log("Login Sucessfully");
-      setToken(response.data.accessToken)
+      setToken(response.data.accessToken);
+      console.log(setToken,'...hddjkedj')
 
       //redirect to home page
       navigate("/dashboard/home");

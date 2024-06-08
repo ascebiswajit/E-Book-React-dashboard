@@ -1,6 +1,12 @@
-import { Outlet } from "react-router-dom"
+import useTokenStore from "@/store"
+import { Navigate, Outlet } from "react-router-dom"
 
 const AuthLayout = () => {
+  const token = useTokenStore((state)=>state.token);
+  // console.log(token)
+  // if(token ){
+  //   return <Navigate to={'/dashboard/home'} replace />
+  // }
   return (
     <>
     <Outlet/>
