@@ -15,34 +15,36 @@ import { useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/http/api";
 import { LoaderCircle } from "lucide-react";
+import useTokenStore from "@/store";
 const LoginPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const PasswordRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const setToken = useTokenStore((state) => state.setToken);
 
   const mutation = useMutation({
-    mutationFn:login,
-    onSuccess() {
-      console.log('Login Sucessfully');
+    mutationFn: login,
+    onSuccess(response) {
+      console.log("Login Sucessfully");
+      setToken(response.data.accessToken)
 
       //redirect to home page
-      navigate('/dashboard/home')
+      navigate("/dashboard/home");
     },
-  })
-  const handleLogin = ()=>{
+  });
+  const handleLogin = () => {
     const email = emailRef.current?.value;
     const password = PasswordRef.current?.value;
-    console.log(email,password)
+    console.log(email, password);
 
     //mutation
-    if(!email || !password){
-      return alert('Please enter email and password')
+    if (!email || !password) {
+      return alert("Please enter email and password");
     }
-    mutation.mutate({email,password})
-
+    mutation.mutate({ email, password });
 
     //make Server call
-  }
+  };
   return (
     <section className="flex justify-center items-center h-screen">
       <Card className="w-full max-w-sm">
@@ -50,16 +52,21 @@ const LoginPage = () => {
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
             Enter your email below to login to your account.
-            {mutation.isPending&&<div className="text-cyan-900 text-sm">Loading ...</div>}
-            {mutation.isError&&<div className="text-red-500 text-sm">{mutation.error.message}</div>}
-
+            {mutation.isPending && (
+              <div className="text-cyan-900 text-sm">Loading ...</div>
+            )}
+            {mutation.isError && (
+              <div className="text-red-500 text-sm">
+                {mutation.error.message}
+              </div>
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
-            ref={emailRef}
+              ref={emailRef}
               id="email"
               type="email"
               placeholder="m@example.com"
@@ -73,12 +80,12 @@ const LoginPage = () => {
         </CardContent>
         <CardFooter>
           <div className="w-full">
-            <Button className="w-full" onClick={handleLogin} disabled={mutation.isPending}>
-
-              {
-                mutation.isPending&&
-                <LoaderCircle className='animate-spin'/>
-              }
+            <Button
+              className="w-full"
+              onClick={handleLogin}
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending && <LoaderCircle className="animate-spin" />}
               <span className="ml-2 ">Sign in</span>
             </Button>
             <div className="mt-4 text-center text-sm">
