@@ -1,12 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  Bell,
-  CircleUser,
-  Home,
-  Package,
-  Package2,
-  Search,
-} from "lucide-react";
+
 
 import { Button } from "@/components/ui/button";
 
@@ -27,7 +20,10 @@ const HomePage = () => {
           <p className="text-sm text-muted-foreground">
             You can start selling as soon as you add a product.
           </p>
+          <Link to={"/dashboard/books/create"}>
+
           <Button className="mt-4">Add Books</Button>
+          </Link>
         </div>
       </div>
     </>
