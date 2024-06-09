@@ -27,7 +27,6 @@ const LoginPage = () => {
     onSuccess(response) {
       console.log("Login Sucessfully");
       setToken(response.data.accessToken);
-      console.log(setToken,'...hddjkedj')
 
       //redirect to home page
       navigate("/dashboard/home");
